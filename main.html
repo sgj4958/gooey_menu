@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gooey Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<style>
+body {
+    border: 1px solid #ddd;
+    margin: 5px;
+    overflow: hidden;
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.blobs {
+    filter: url('#goo');
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:has(>:hover) .blob {
+        &:nth-child(n) {transform: translateY(5px);}
+        &:nth-child(2n) {transform: translateY(-5px);}
+        &:first-child {transform: none;}
+    }
+    .blob {
+        background:#333;
+        width: 50px;
+        height: 50px;
+        border-radius:100%;
+        padding: 5px;
+        cursor: pointer;
+
+        div {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: .3s;
+        }
+        &:hover div {width: 110%; height: 110%;}
+        &:nth-child(1) {z-index: 1; transform: scale(1.2); transition: .6s; color: #eee;}
+        &, * {box-sizing: border-box;}
+    }
+}
+</style>
+<body>
+<div class="blobs">
+  <div class="blob"><div><span class="material-symbols-outlined">apps</span></div></div>
+  <div class="blob"><div><span class="material-symbols-outlined">bar_chart</span></div></div>
+  <div class="blob"><div><span class="material-symbols-outlined">data_table</span></div></div>
+  <div class="blob"><div><span class="material-symbols-outlined">folder_managed</span></div></div>
+  <div class="blob"><div><span class="material-symbols-outlined">manage_accounts</span></div></div>
+  <div class="blob"><div><span class="material-symbols-outlined">settings</span></div></div>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+      <feBlend in="SourceGraphic" in2="goo" />
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+</body>
+<script>
+    for(let i = 1; i < document.querySelectorAll(".blobs .blob").length; i++)
+    document.querySelector("style").insertAdjacentText("beforeend", `
+        .blobs .blob:nth-child(${i + 1}) {transform: translate(-${i * 50}px) rotate(180deg); transition: .${i + 2}s cubic-bezier(0.85, 0, 0.55, 1.25) .${i - 1}s; color: hsl(${i * 50 + 50}, 90%, 73%);}
+    `)
+</script>
+</html>
